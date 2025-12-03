@@ -1,94 +1,179 @@
 #include <iostream>
-#include "tubes.h"
-
+#include <string>
+#include "ListifyDS.h"
 using namespace std;
 
-void tampilMenuUtama() {
-    cout << "=====================================\n";
-    cout << "        APLIKASI PEMUTAR MUSIK       \n";
-    cout << "=====================================\n";
-    cout << "1. Login sebagai Admin\n";
-    cout << "2. Login sebagai User\n";
-    cout << "3. Keluar\n";
-    cout << "-------------------------------------\n";
-    cout << "Pilih Menu: ";
-}
+int main() {
+    Library L;
+    createLibrary(L);
 
-void tampilMenuAdmin() {
-    cout << "\n=====================================\n";
-    cout << "              MENU ADMIN             \n";
-    cout << "=====================================\n";
-    cout << "1. Tambah Lagu ke Library\n";
-    cout << "2. Lihat Semua Lagu\n";
-    cout << "3. Ubah Data Lagu\n";
-    cout << "4. Hapus Lagu\n";
-    cout << "5. Kembali ke Menu Utama\n";
-    cout << "-------------------------------------\n";
-    cout << "Pilih Menu: ";
-}
+    addressUser users = nullptr;
+    CurrentPlay cp = {nullptr, false, false, nullptr};
+    Stack history;
+    initStack(history);
 
-void tampilMenuUser() {
-    cout << "\n=====================================\n";
-    cout << "              MENU USER              \n";
-    cout << "=====================================\n";
-    cout << "1. Cari Lagu\n";
-    cout << "2. Putar Lagu dari Library\n";
-    cout << "3. Lihat Playlist\n";
-    cout << "4. Tambah Playlist\n";
-    cout << "5. Tambah Lagu ke Playlist\n";
-    cout << "6. Hapus Lagu dari Playlist\n";
-    cout << "7. Play Next Lagu\n";
-    cout << "8. Play Previous Lagu\n";
-    cout << "9. Kembali ke Menu Utama\n";
-    cout << "-------------------------------------\n";
-    cout << "Pilih Menu: ";
-}
+    cout << "=== SELAMAT DATANG DI LISTIFYDS ===" << endl;
 
-void tampilMenuPemutaran() {
-    cout << "\n=====================================\n";
-    cout << "          MENU PEMUTARAN LAGU        \n";
-    cout << "=====================================\n";
-    cout << "1. Play Lagu\n";
-    cout << "2. Stop Lagu\n";
-    cout << "3. Next Lagu\n";
-    cout << "4. Previous Lagu\n";
-    cout << "5. Lihat Antrian Lagu (Queue)\n";
-    cout << "6. Lihat Riwayat Lagu (Stack)\n";
-    cout << "7. Kembali ke Menu User\n";
-    cout << "-------------------------------------\n";
-    cout << "Pilih Menu: ";
-}
+    int pilihanMain = -1;
 
-int main(){
-    int pilihUtama = 0;   // nilai awal supaya while bisa berjalan
+    while (pilihanMain != 0) {
+        cout << "\n===== MENU UTAMA =====" << endl;
+        cout << "1. Menu Admin" << endl;
+        cout << "2. Menu User" << endl;
+        cout << "0. Keluar" << endl;
+        cout << "Masukkan pilihan: ";
+        cin >> pilihanMain;
 
-    while (pilihUtama != 3) {
-        tampilMenuUtama();
-        cin >> pilihUtama;
+        if (pilihanMain == 1) {
+            int pilihanAdmin = -1;
+            while (pilihanAdmin != 0) {
+                cout << "\n=== MENU ADMIN ===" << endl;
+                cout << "1. Tambah Lagu" << endl;
+                cout << "2. Lihat Semua Lagu" << endl;
+                cout << "3. Update Lagu" << endl;
+                cout << "4. Hapus Lagu" << endl;
+                cout << "0. Kembali" << endl;
+                cout << "Pilihan: "; cin >> pilihanAdmin;
 
-        if (pilihUtama == 1) {
-            int pilihAdmin = 0;
-
-            while (pilihAdmin != 5) {
-                tampilMenuAdmin();
-                cin >> pilihAdmin;
-
-                // proses menu admin...
+                if (pilihanAdmin == 1) {
+                    Song s;
+                    cout << "Masukkan ID Lagu: "; cin >> s.id;
+                    cout << "Masukkan Judul: "; cin >> s.judul;
+                    cout << "Masukkan Artis: "; cin >> s.artis;
+                    cout << "Masukkan Genre: "; cin >> s.genre;
+                    cout << "Masukkan Tahun: "; cin >> s.tahun;
+                    addSong(L, s);
+                }
+                else if (pilihanAdmin == 2) showAllSongs(L);
+                else if (pilihanAdmin == 3) {
+                    int id;
+                    cout << "ID Lagu yang ingin diupdate: "; cin >> id;
+                    Song s;
+                    cout << "Judul Baru: "; cin >> s.judul;
+                    cout << "Artis Baru: "; cin >> s.artis;
+                    cout << "Genre Baru: "; cin >> s.genre;
+                    cout << "Tahun Baru: "; cin >> s.tahun;
+                    updateSong(L, id, s);
+                }
+                else if (pilihanAdmin == 4) {
+                    int id;
+                    cout << "ID Lagu yang ingin dihapus: "; cin >> id;
+                    deleteSong(L, id, users);
+                }
+                else if (pilihanAdmin == 0) cout << "Kembali ke Menu Utama" << endl;
+                else cout << "Pilihan tidak valid" << endl;
             }
         }
+        else if (pilihanMain == 2) {
+            cout << "\nUsername (ketik 'buat' untuk user baru): ";
+            string uname; cin >> uname;
+            addressUser me = nullptr;
 
-        else if (pilihUtama == 2) {
-            int pilihUser = 0;
+            if (uname == "buat") {
+                cout << "Nama user baru: "; string newname; cin >> newname;
+                me = createUser(newname);
+                addUser(users, me);
+                cout << "User '" << newname << "' berhasil dibuat." << endl;
+            } else {
+                me = users;
+                while (me && me->username != uname) me = me->next;
+                if (!me) {
+                    cout << "User tidak ditemukan" << endl;
+                    continue;
+                }
+                cout << "Selamat datang, " << me->username << "!" << endl;
+            }
 
-            while (pilihUser != 9) {
-                tampilMenuUser();
-                cin >> pilihUser;
+            int pilihanUser = -1;
+            while (pilihanUser != 0) {
+                cout << "\n=== MENU USER (" << me->username << ") ===" << endl;
+                cout << "1. Cari Lagu" << endl;
+                cout << "2. Putar Lagu dari Library" << endl;
+                cout << "3. Stop Lagu" << endl;
+                cout << "4. Next Lagu" << endl;
+                cout << "5. Prev Lagu" << endl;
+                cout << "6. Playlist" << endl;
+                cout << "7. Lihat Semua Lagu" << endl;
+                cout << "0. Logout" << endl;
+                cout << "Pilihan: "; cin >> pilihanUser;
 
-                // proses menu user...
+                if (pilihanUser == 1) searchSong(L);
+                else if (pilihanUser == 2) {
+                    int id; cout << "ID Lagu: "; cin >> id;
+                    addressLibrary s = findSongById(L, id);
+                    if (!s) cout << "Lagu tidak ditemukan" << endl;
+                    else {
+                        if (cp.isPlaying && cp.songPtr) push(history, cp.songPtr);
+                        playSong(cp, s);
+                    }
+                }
+                else if (pilihanUser == 3) stopSong(cp);
+                else if (pilihanUser == 4) nextSong(L, cp);
+                else if (pilihanUser == 5) prevSong(cp, history);
+                else if (pilihanUser == 6) {
+                    int menuPl = -1;
+                    while(menuPl != 0) {
+                        cout << "\n=== MENU PLAYLIST ===" << endl;
+                        cout << "1. Buat Playlist" << endl;
+                        cout << "2. Tambah Lagu ke Playlist" << endl;
+                        cout << "3. Hapus Lagu dari Playlist" << endl;
+                        cout << "4. Lihat Playlist" << endl;
+                        cout << "5. Rename Playlist" << endl;
+                        cout << "0. Kembali" << endl;
+                        cout << "Pilihan: "; cin >> menuPl;
+
+                        if(menuPl == 1) {
+                            string nama; cout << "Nama Playlist: "; cin >> nama;
+                            addPlaylistToUser(me, nama);
+                        }
+                        else if(menuPl == 2) {
+                            if(!me->firstPlaylist) {cout<<"Belum ada playlist"<< endl; continue;}
+                            string plnama; cout << "Nama Playlist: "; cin >> plnama;
+                            addressPlaylistNode pl = me->firstPlaylist;
+                            while(pl && pl->info.nama != plnama) pl = pl->next;
+                            if(!pl) {cout<<"Playlist tidak ditemukan"<< endl; continue;}
+                            int id; cout << "ID Lagu: "; cin >> id;
+                            addressLibrary s = findSongById(L, id);
+                            if(!s) {cout<<"Lagu tidak ditemukan"<< endl; continue;}
+                            addSongToPlaylist(pl->info, s);
+                        }
+                        else if(menuPl == 3) {
+                            if(!me->firstPlaylist) {cout<<"Belum ada playlist"<< endl; continue;}
+                            string plnama; cout << "Nama Playlist: "; cin >> plnama;
+                            addressPlaylistNode pl = me->firstPlaylist;
+                            while(pl && pl->info.nama != plnama) pl = pl->next;
+                            if(!pl) {cout<<"Playlist tidak ditemukan"<< endl; continue;}
+                            int id; cout << "ID Lagu yang ingin dihapus: "; cin >> id;
+                            removeSongFromPlaylist(pl->info, id);
+                            cout<<"Lagu dihapus"<< endl;
+                        }
+                        else if(menuPl == 4) {
+                            if(!me->firstPlaylist) {cout<<"Belum ada playlist"<< endl; continue;}
+                            addressPlaylistNode pl = me->firstPlaylist;
+                            while(pl) {showPlaylist(pl->info); pl = pl->next;}
+                        }
+                        else if(menuPl == 5) {
+                            if(!me->firstPlaylist) {cout<<"Belum ada playlist"<< endl; continue;}
+                            string oldName; cout << "Nama Playlist yang ingin diubah: "; cin >> oldName;
+                            addressPlaylistNode pl = me->firstPlaylist;
+                            while(pl && pl->info.nama != oldName) pl = pl->next;
+                            if(!pl) {cout<<"Playlist tidak ditemukan"<< endl; continue;}
+                            string newName; cout << "Nama baru: "; cin >> newName;
+                            pl->info.nama = newName;
+                            cout << "Playlist berhasil diubah menjadi '" << newName << "'\n";
+                        }
+                        else if(menuPl == 0) cout<<"Kembali ke Menu User"<< endl;
+                        else cout<<"Pilihan tidak valid"<< endl;
+                    }
+                }
+                else if (pilihanUser == 7) showAllSongs(L);
+                else if (pilihanUser == 0) cout << "Logout " << me->username << endl;
+                else cout << "Pilihan tidak valid" << endl;
             }
         }
+        else if (pilihanMain == 0) cout << "Terima kasih telah menggunakan ListifyDS!" << endl;
+        else cout << "Pilihan tidak valid" << endl;
     }
 
-    cout << "Terima kasih telah menggunakan aplikasi.\n";
     return 0;
 }
