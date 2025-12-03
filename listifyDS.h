@@ -44,16 +44,22 @@ struct Playlist {
     string nama;
     addressPlaylist head;
     addressPlaylist tail;
+    Playlist* next;          // untuk menyusun list playlist per user (MLL tipe A)
 };
 
 // ======================
 //  USER (MLL Tipe A)
 //  User → punya banyak playlist
 // ======================
+typedef struct NodeUser* addressUser;
+
 struct NodeUser {
     string username;
     NodeUser* nextUser;
     Playlist* listPlaylist;   // pointer ke array/LL playlist (bebas versi kamu)
+};
+struct UserList {
+    NodeUser* firstUser;
 };
 
 // ======================
@@ -77,12 +83,12 @@ typedef struct NodeQueue* addressQueue;
 
 struct NodeQueue {
     addressLibrary lagu;
-    NodeQueue* next;
+    addressQueue next;
 };
 
 struct PlayQueue {
-    addressQueue front;
-    addressQueue rear;
+    addressQueue head;
+    addressQueue tail;
 };
 
 // ======================
@@ -141,5 +147,6 @@ void playFromPlaylist(Playlist P, CurrentPlay &cp, int id);
 
 // Pencarian
 void searchSong(Library L);
+
 
 #endif // TUBES_H_INCLUDED
