@@ -154,7 +154,7 @@ bool isPlaylistEmpty(Playlist P);
 
 
 // ============================================================
-//  STACK — FULL FEATURE (tanpa nama "init")
+//  STACK — FULL FEATURE 
 // ============================================================
 
 void createStack(Stack &S);           
@@ -165,7 +165,7 @@ void showStack(Stack S);
 
 
 // ============================================================
-//  QUEUE — FULL FEATURE (tanpa nama "init")
+//  QUEUE — FULL FEATURE 
 // ============================================================
 
 void createQueue(Queue &Q);           
