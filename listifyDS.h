@@ -18,7 +18,7 @@ typedef struct QueueNode*          addressQueueNode;
 
 
 // ============================================================
-//  STRUCT: SONG
+//  STRUCT: SONG (UPDATED WITH DURASI)
 // ============================================================
 struct Song {
     int id;
@@ -26,11 +26,12 @@ struct Song {
     string artis;
     string genre;
     int tahun;
+    int durasi;     // durasi lagu (detik atau menit)
 };
 
 
 // ============================================================
-//  LIBRARY (DLL)
+//  LIBRARY (DOUBLY LINKED LIST)
 // ============================================================
 struct NodeLibrary {
     Song info;
@@ -45,10 +46,10 @@ struct Library {
 
 
 // ============================================================
-//  PLAYLIST RELATION LIST (DLL)
+//  PLAYLIST (DLL RELATION, MENAMPUNG POINTER KE LIBRARY)
 // ============================================================
 struct NodePlaylist {
-    addressLibrary lagu;          // DULU: songPtr (diganti)
+    addressLibrary lagu;   // pointer ke node library
     addressPlaylist next;
     addressPlaylist prev;
 };
@@ -61,10 +62,10 @@ struct Playlist {
 
 
 // ============================================================
-//  USER (MLL TIPE A)
+//  USER (MULTIPLE PLAYLISTS) – MLL TIPE A
 // ============================================================
 struct PlaylistNode {
-    Playlist info;
+    Playlist info;                  // satu user bisa punya banyak playlist
     addressPlaylistNode next;
     addressPlaylistNode prev;
 };
@@ -79,10 +80,10 @@ struct NodeUser {
 
 
 // ============================================================
-//  STACK RIWAYAT
+//  STACK (RIWAYAT LAGU DIPUTAR) – LIFO
 // ============================================================
 struct StackNode {
-    addressLibrary lagu;          // pointer ke lagu
+    addressLibrary lagu;
     addressStackNode next;
 };
 
@@ -92,7 +93,7 @@ struct Stack {
 
 
 // ============================================================
-//  QUEUE ANTRIAN
+//  QUEUE (ANTRIAN LAGU) – FIFO
 // ============================================================
 struct QueueNode {
     addressLibrary lagu;
@@ -106,7 +107,7 @@ struct Queue {
 
 
 // ============================================================
-//  CURRENT PLAY
+//  CURRENT PLAY (STATUS PLAYER SAAT INI)
 // ============================================================
 struct CurrentPlay {
     addressLibrary songPtr;
@@ -131,9 +132,8 @@ void deleteSong(Library &L, int id, addressUser userList);
 
 
 // ============================================================
-//  USER & PLAYLIST (MLL TIPE A)
+//  USER & PLAYLIST MANAGEMENT (MLL TIPE A)
 // ============================================================
-
 addressUser createUser(string nama);
 void addUser(addressUser &U, addressUser newUser);
 
@@ -142,9 +142,8 @@ void addPlaylistToUser(addressUser u, string nama);
 
 
 // ============================================================
-//  PLAYLIST (DLL RELASI) — FULL
+//  PLAYLIST (DLL RELATION)
 // ============================================================
-
 void createPlaylist(Playlist &P, string nama);
 addressPlaylist allocatePlaylist(addressLibrary L);
 void addSongToPlaylist(Playlist &P, addressLibrary L);
@@ -154,10 +153,9 @@ bool isPlaylistEmpty(Playlist P);
 
 
 // ============================================================
-//  STACK — FULL FEATURE 
+//  STACK
 // ============================================================
-
-void createStack(Stack &S);           
+void createStack(Stack &S);
 void push(Stack &S, addressLibrary L);
 addressLibrary pop(Stack &S);
 bool isStackEmpty(Stack S);
@@ -165,10 +163,9 @@ void showStack(Stack S);
 
 
 // ============================================================
-//  QUEUE — FULL FEATURE 
+//  QUEUE
 // ============================================================
-
-void createQueue(Queue &Q);           
+void createQueue(Queue &Q);
 void enqueue(Queue &Q, addressLibrary L);
 addressLibrary dequeue(Queue &Q);
 bool isQueueEmpty(Queue Q);
@@ -176,9 +173,8 @@ void showQueue(Queue Q);
 
 
 // ============================================================
-//  PLAY CONTROL
+//  PLAY CONTROL (MENGATUR PEMUTARAN LAGU)
 // ============================================================
-
 void playSong(CurrentPlay &cp, addressLibrary s);
 void playFromPlaylist(CurrentPlay &cp, Playlist &P, int id);
 void stopSong(CurrentPlay &cp);
