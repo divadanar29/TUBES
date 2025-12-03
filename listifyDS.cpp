@@ -119,7 +119,6 @@ void searchSong(Library L) {
 
     int mode;
     cin >> mode;
-    cin.ignore();
 
     bool found = false;
     addressLibrary p = L.head;
