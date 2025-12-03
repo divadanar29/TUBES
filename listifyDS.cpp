@@ -518,6 +518,11 @@ void showPlaylist(Playlist P) {
     }
 }
 
+//mengecek apakah playlist kosong
+bool isPlaylistEmpty(Playlist P) {
+    return P.head == nullptr;
+}
+
 // ====================================================================
 //                         STACK (RIWAYAT)
 // ====================================================================
@@ -555,6 +560,11 @@ addressLibrary pop(Stack &S) {
     }
 
     return result;
+}
+
+// Mengecek apakah stack kosong
+bool isStackEmpty(Stack S) {
+    return S.top == nullptr;
 }
 
 // Menampilkan isi stack (riwayat)
@@ -626,6 +636,11 @@ addressLibrary dequeue(Queue &Q) {
     }
 
     return result;
+}
+
+// Mengecek apakah queue kosong
+bool isQueueEmpty(Queue Q) {
+    return Q.head == nullptr;
 }
 
 // Menampilkan queue
