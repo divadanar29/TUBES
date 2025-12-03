@@ -1,11 +1,25 @@
-#ifndef TUBES_H_INCLUDED
-#define TUBES_H_INCLUDED
+#ifndef LISTIFYDS_H_INCLUDED
+#define LISTIFYDS_H_INCLUDED
 
+#include <iostream>
+#include <string>
 using namespace std;
 
-// ======================
-//  DATA LAGU
-// ======================
+// ============================================================
+//  TYPEDEF POINTER
+// ============================================================
+typedef struct NodeLibrary*        addressLibrary;
+typedef struct NodePlaylist*       addressPlaylist;
+typedef struct PlaylistNode*       addressPlaylistNode;
+typedef struct NodeUser*           addressUser;
+
+typedef struct StackNode*          addressStackNode;
+typedef struct QueueNode*          addressQueueNode;
+
+
+// ============================================================
+//  STRUCT: SONG
+// ============================================================
 struct Song {
     int id;
     string judul;
@@ -14,11 +28,10 @@ struct Song {
     int tahun;
 };
 
-// ======================
-//  DOUBLY LINKED LIST (LIBRARY LAGU UTAMA)
-// ======================
-typedef struct NodeLibrary* addressLibrary;
 
+// ============================================================
+//  LIBRARY (DLL)
+// ============================================================
 struct NodeLibrary {
     Song info;
     addressLibrary next;
@@ -30,123 +43,148 @@ struct Library {
     addressLibrary tail;
 };
 
-// ======================
-//  PLAYLIST (SINGLY LINKED LIST RELASI KE LIBRARY)
-// ======================
-typedef struct NodePlaylist* addressPlaylist;
 
+// ============================================================
+//  PLAYLIST RELATION LIST (DLL)
+// ============================================================
 struct NodePlaylist {
-    addressLibrary lagu;     // pointer menuju node lagu di library
+    addressLibrary lagu;          // DULU: songPtr (diganti)
     addressPlaylist next;
+    addressPlaylist prev;
 };
 
 struct Playlist {
     string nama;
     addressPlaylist head;
     addressPlaylist tail;
-    Playlist* next;          // untuk menyusun list playlist per user (MLL tipe A)
 };
 
-// ======================
-//  USER (MLL Tipe A)
-//  User → punya banyak playlist
-// ======================
-typedef struct NodeUser* addressUser;
+
+// ============================================================
+//  USER (MLL TIPE A)
+// ============================================================
+struct PlaylistNode {
+    Playlist info;
+    addressPlaylistNode next;
+    addressPlaylistNode prev;
+};
 
 struct NodeUser {
     string username;
-    NodeUser* nextUser;
-    Playlist* listPlaylist;   // pointer ke array/LL playlist (bebas versi kamu)
-};
-struct UserList {
-    NodeUser* firstUser;
-};
+    addressPlaylistNode firstPlaylist;
 
-// ======================
-//  STACK RIWAYAT PEMUTARAN
-// ======================
-typedef struct NodeHistory* addressHistory;
-
-struct NodeHistory {
-    addressLibrary lagu;     // menyimpan pointer ke lagu yang diputar
-    NodeHistory* next;
+    addressUser next;
+    addressUser prev;
 };
 
-struct HistoryStack {
-    addressHistory top;
+
+// ============================================================
+//  STACK RIWAYAT
+// ============================================================
+struct StackNode {
+    addressLibrary lagu;          // pointer ke lagu
+    addressStackNode next;
 };
 
-// ======================
-//  QUEUE ANTRIAN PEMUTARAN
-// ======================
-typedef struct NodeQueue* addressQueue;
+struct Stack {
+    addressStackNode top;
+};
 
-struct NodeQueue {
+
+// ============================================================
+//  QUEUE ANTRIAN
+// ============================================================
+struct QueueNode {
     addressLibrary lagu;
-    addressQueue next;
+    addressQueueNode next;
 };
 
-struct PlayQueue {
-    addressQueue head;
-    addressQueue tail;
+struct Queue {
+    addressQueueNode head;
+    addressQueueNode tail;
 };
 
-// ======================
-// INFORMASI PEMUTARAN LAGU
-// ======================
+
+// ============================================================
+//  CURRENT PLAY
+// ============================================================
 struct CurrentPlay {
-    addressLibrary currentLibraryNode;     // untuk navigasi next/prev di library
-    addressPlaylist currentPlaylistNode;   // untuk navigasi next/prev di playlist
-
+    addressLibrary songPtr;
     bool isPlaying;
-    bool fromPlaylist;                     // true = sedang memutar dari playlist
 
-    Song info;                             // salinan data lagu (opsional)
+    bool fromPlaylist;
+    addressPlaylist currentPlaylistNode;
 };
 
-// ==============================
-//  PROTOTYPE FUNGSI & PROSEDUR
-// ==============================
 
-// Library (DLL)
+// ============================================================
+//  FUNGSI LIBRARY
+// ============================================================
 void createLibrary(Library &L);
 addressLibrary allocateLibrary(Song s);
 void addSong(Library &L, Song s);
 void showAllSongs(Library L);
 addressLibrary findSongById(Library L, int id);
 void updateSong(Library &L, int id, Song newData);
-void deleteSong(Library &L, int id);
+void searchSong(Library L);
+void deleteSong(Library &L, int id, addressUser userList);
 
-// Playlist (SLL relasi)
+
+// ============================================================
+//  USER & PLAYLIST (MLL TIPE A)
+// ============================================================
+
+addressUser createUser(string nama);
+void addUser(addressUser &U, addressUser newUser);
+
+addressPlaylistNode createPlaylistNode(string nama);
+void addPlaylistToUser(addressUser u, string nama);
+
+
+// ============================================================
+//  PLAYLIST (DLL RELASI) — FULL
+// ============================================================
+
 void createPlaylist(Playlist &P, string nama);
 addressPlaylist allocatePlaylist(addressLibrary L);
 void addSongToPlaylist(Playlist &P, addressLibrary L);
 void removeSongFromPlaylist(Playlist &P, int id);
 void showPlaylist(Playlist P);
+bool isPlaylistEmpty(Playlist P);
 
-// Stack History
-void createStack(HistoryStack &S);
-void pushHistory(HistoryStack &S, addressLibrary L);
-addressLibrary popHistory(HistoryStack &S);
-bool isStackEmpty(HistoryStack S);
-void showHistory(HistoryStack S);
 
-// Queue Antrian
-void createQueue(PlayQueue &Q);
-void enqueue(PlayQueue &Q, addressLibrary L);
-addressLibrary dequeue(PlayQueue &Q);
-bool isQueueEmpty(PlayQueue Q);
-void showQueue(PlayQueue Q);
+// ============================================================
+//  STACK — FULL FEATURE (tanpa nama "init")
+// ============================================================
 
-// Navigasi Lagu
-void playSong(CurrentPlay &cp, addressLibrary L);
+void createStack(Stack &S);           
+void push(Stack &S, addressLibrary L);
+addressLibrary pop(Stack &S);
+bool isStackEmpty(Stack S);
+void showStack(Stack S);
+
+
+// ============================================================
+//  QUEUE — FULL FEATURE (tanpa nama "init")
+// ============================================================
+
+void createQueue(Queue &Q);           
+void enqueue(Queue &Q, addressLibrary L);
+addressLibrary dequeue(Queue &Q);
+bool isQueueEmpty(Queue Q);
+void showQueue(Queue Q);
+
+
+// ============================================================
+//  PLAY CONTROL
+// ============================================================
+
+void playSong(CurrentPlay &cp, addressLibrary s);
+void playFromPlaylist(CurrentPlay &cp, Playlist &P, int id);
 void stopSong(CurrentPlay &cp);
 void nextSong(Library L, CurrentPlay &cp);
-void prevSong(Library L, CurrentPlay &cp);
-void playFromPlaylist(Playlist P, CurrentPlay &cp, int id);
+void prevSong(CurrentPlay &cp, Stack &history);
 
-// Pencarian
-void searchSong(Library L);
+addressLibrary findSimilarSong(Library L, addressLibrary current);
 
-
-#endif // TUBES_H_INCLUDED
+#endif
