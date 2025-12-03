@@ -33,7 +33,7 @@ void addSong(Library &L, Song s){
 void showAllSongs(Library L){
     addressLibrary P = L.head;
 
-    while (P != NULL) {
+    while (P != nullptr) {
         cout << P->info.id << " - " << P->info.judul << endl;
         P = P->next;
     }
@@ -76,11 +76,11 @@ void deleteSong(Library &L, int id){
 
         } else if (isHead) {
             L.head = P->next;
-            L.head->prev = NULL;
+            L.head->prev = nullptr;
 
         } else if (isTail) {
             L.tail = P->prev;
-            L.tail->next = NULL;
+            L.tail->next = nullptr;
 
         } else {
             P->prev->next = P->next;
@@ -106,11 +106,69 @@ bool isStackEmpty(HistoryStack S);
 void showHistory(HistoryStack S);
 
 // Queue Antrian
-void createQueue(PlayQueue &Q);
-void enqueue(PlayQueue &Q, addressLibrary L);
-addressLibrary dequeue(PlayQueue &Q);
-bool isQueueEmpty(PlayQueue Q);
-void showQueue(PlayQueue Q);
+void createQueue(PlayQueue &Q){
+    Q.head = nullptr;
+    Q.tail = nullptr;
+}
+
+void enqueue(PlayQueue &Q, addressLibrary L){
+    addressQueue P = new NodeQueue;
+    P->lagu = L;
+    P->next = nullptr;
+
+    if (Q.head == nullptr) {
+        Q.head = P;
+        Q.tail = P;
+    } else {
+        Q.tail->next = P;
+        Q.tail = P;
+    }
+}
+
+addressLibrary dequeue(PlayQueue &Q){
+    addressQueue P = Q.head;
+    addressLibrary hasil = nullptr;
+
+    if (P != nullptr) {
+        hasil = P->lagu;
+        Q.head = P->next;
+
+        if (Q.head == nullptr) {
+            Q.tail = nullptr;
+        }
+
+        delete P;
+    }
+
+    return hasil;
+}
+
+bool isQueueEmpty(PlayQueue Q){
+    return (Q.head == nullptr);
+}
+
+void showQueue(PlayQueue Q){
+    addressQueue P = Q.head;
+
+    cout << "\n=== DAFTAR ANTRIAN LAGU (QUEUE) ===\n";
+
+    if (P == nullptr) {
+        cout << "Queue kosong.\n";
+    } else {
+        int nomor = 1;
+
+        while (P != nullptr) {
+            cout << nomor << ". "
+                 << P->lagu->info.judul << " - "
+                 << P->lagu->info.artis << "\n";
+
+            P = P->next;
+            nomor = nomor + 1;
+        }
+    }
+
+    cout << "====================================\n";
+}
 
 // Navigasi Lagu
 void playSong(CurrentPlay &cp, addressLibrary L);
@@ -120,4 +178,47 @@ void prevSong(Library L, CurrentPlay &cp);
 void playFromPlaylist(Playlist P, CurrentPlay &cp, int id);
 
 // Pencarian
-void searchSong(Library L);
+void searchSong(Library L){
+    string key;
+    int pilihan;
+
+    cout << "PENCARIAN LAGU\n";
+    cout << "Cari berdasarkan:\n";
+    cout << "1. Judul\n";
+    cout << "2. Penyanyi\n";
+    cout << "3. Genre\n";
+    cout << "Pilih (1-3): ";
+    cin >> pilihan;
+
+    cout << "Masukkan kata kunci: ";
+    cin >> key;
+
+    addressLibrary P = L.head;
+    bool found = false;
+
+    // Penelusuran sequential dari head sampai tail
+    while (P != nullptr) {
+        // Langsung cek kondisi sesuai pilihan
+        if ((pilihan == 1 && P->info.judul == key) ||
+            (pilihan == 2 && P->info.penyanyi == key) ||
+            (pilihan == 3 && P->info.genre == key))
+        {
+            if (!found) {
+                cout << "\nHASIL PENCARIAN:\n";
+            }
+
+            cout << "---------------------------------\n";
+            cout << "Judul   : " << P->info.judul << endl;
+            cout << "Penyanyi: " << P->info.penyanyi << endl;
+            cout << "Genre   : " << P->info.genre << endl;
+
+            found = true;
+        }
+
+        P = P->next;   // lanjutkan sampai akhir list
+    }
+
+    if (!found) {
+        cout << "Lagu tidak ditemukan.\n";
+    }
+}
