@@ -56,14 +56,13 @@ void showAllSongs(Library L) {
 
     // Menelusuri node dari head sampai tail
     while (p != nullptr) {
-
-        // Menampilkan detail lagu
+        // Menampilkan detail lagu 
         cout << idx << ". ID: " << p->info.id
-            << " | " << p->info.judul
-            << " - " << p->info.artis
-            << " | " << p->info.genre
-            << " | " << p->info.tahun << "\n";
-
+             << " | " << p->info.judul
+             << " - " << p->info.artis
+             << " | " << p->info.genre
+             << " | " << p->info.tahun
+             << " | " << p->info.durasi << "\n";
         p = p->next;
         idx = idx + 1;
     }
