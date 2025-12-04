@@ -111,9 +111,9 @@ void searchSong(Library L) {
 
     cout << "\n=== PENCARIAN LAGU ===\n";
     cout << "1. Berdasarkan ID\n";
-    cout << "2. Berdasarkan Judul\n";
-    cout << "3. Berdasarkan Artis\n";
-    cout << "4. Berdasarkan Genre\n";
+    cout << "2. Berdasarkan Judul (exact)\n";
+    cout << "3. Berdasarkan Artis (exact)\n";
+    cout << "4. Berdasarkan Genre (exact)\n";
     cout << "5. Berdasarkan Tahun\n";
     cout << "Pilih (1-5): ";
 
@@ -123,144 +123,120 @@ void searchSong(Library L) {
     bool found = false;
     addressLibrary p = L.head;
 
-    // =============================
-    // MODE 1 — Cari berdasarkan ID
-    // =============================
+    // MODE 1 — ID
     if (mode == 1) {
         int id;
         cout << "Masukkan ID: ";
         cin >> id;
 
-        p = L.head;
-
-        while (p != nullptr) {
+        while (p != nullptr && !found) {
             if (p->info.id == id) {
                 cout << "\n-- DITEMUKAN --\n";
-                cout << "ID: " << p->info.id << "\n";
-                cout << "Judul: " << p->info.judul << "\n";
-                cout << "Artis: " << p->info.artis << "\n";
-                cout << "Genre: " << p->info.genre << "\n";
-                cout << "Tahun: " << p->info.tahun << "\n";
-
+                cout << "ID    : " << p->info.id << "\n";
+                cout << "Judul : " << p->info.judul << "\n";
+                cout << "Artis : " << p->info.artis << "\n";
+                cout << "Genre : " << p->info.genre << "\n";
+                cout << "Tahun : " << p->info.tahun << "\n";
+                cout << "Durasi: " << p->info.durasi << "\n";
                 found = true;
+            } else {
+                p = p->next;
             }
-            p = p->next;
         }
     }
 
-    // ======================================
-    // MODE 2 — Cari berdasarkan judul (substring)
-    // ======================================
+    // MODE 2 — Judul 
     else if (mode == 2) {
         string key;
+        cout << "Masukkan Judul (exact): ";
+        cin >> key;    // diganti getline agar bisa tanpa ignore
 
-        cout << "Masukkan Judul (bisa sebagian): ";
-        getline(cin, key);
-
-        p = L.head;
-
-        while (p != nullptr) {
-            if (p->info.judul.find(key) != string::npos) {
-
-                cout << "\nID: " << p->info.id << "\n";
-                cout << "Judul: " << p->info.judul << "\n";
-                cout << "Artis: " << p->info.artis << "\n";
-                cout << "Genre: " << p->info.genre << "\n";
-                cout << "Tahun: " << p->info.tahun << "\n";
-                cout << "-----------------\n";
-
+        while (p != nullptr && !found) {
+            if (p->info.judul == key) {
+                cout << "\n-- DITEMUKAN --\n";
+                cout << "ID    : " << p->info.id << "\n";
+                cout << "Judul : " << p->info.judul << "\n";
+                cout << "Artis : " << p->info.artis << "\n";
+                cout << "Genre : " << p->info.genre << "\n";
+                cout << "Tahun : " << p->info.tahun << "\n";
+                cout << "Durasi: " << p->info.durasi << "\n";
                 found = true;
+            } else {
+                p = p->next;
             }
-            p = p->next;
         }
     }
 
-    // ======================================
-    // MODE 3 — Cari berdasarkan artis (substring)
-    // ======================================
+    // MODE 3 — Artis 
     else if (mode == 3) {
         string key;
+        cout << "Masukkan Artis (exact): ";
+        cin >> key;
 
-        cout << "Masukkan Artis (bisa sebagian): ";
-        getline(cin, key);
-
-        p = L.head;
-
-        while (p != nullptr) {
-            if (p->info.artis.find(key) != string::npos) {
-
-                cout << "\nID: " << p->info.id << "\n";
-                cout << "Judul: " << p->info.judul << "\n";
-                cout << "Artis: " << p->info.artis << "\n";
-                cout << "Genre: " << p->info.genre << "\n";
-                cout << "Tahun: " << p->info.tahun << "\n";
-                cout << "-----------------\n";
-
+        while (p != nullptr && !found) {
+            if (p->info.artis == key) {
+                cout << "\n-- DITEMUKAN --\n";
+                cout << "ID    : " << p->info.id << "\n";
+                cout << "Judul : " << p->info.judul << "\n";
+                cout << "Artis : " << p->info.artis << "\n";
+                cout << "Genre : " << p->info.genre << "\n";
+                cout << "Tahun : " << p->info.tahun << "\n";
+                cout << "Durasi: " << p->info.durasi << "\n";
                 found = true;
+            } else {
+                p = p->next;
             }
-            p = p->next;
         }
     }
 
-    // ======================================
-    // MODE 4 — Cari berdasarkan genre
-    // ======================================
+    // MODE 4 — Genre 
     else if (mode == 4) {
         string key;
+        cout << "Masukkan Genre (exact): ";
+        cin >> key;
 
-        cout << "Masukkan Genre (bisa sebagian): ";
-        getline(cin, key);
-
-        p = L.head;
-
-        while (p != nullptr) {
-            if (p->info.genre.find(key) != string::npos) {
-
-                cout << "\nID: " << p->info.id << "\n";
-                cout << "Judul: " << p->info.judul << "\n";
-                cout << "Artis: " << p->info.artis << "\n";
-                cout << "Genre: " << p->info.genre << "\n";
-                cout << "Tahun: " << p->info.tahun << "\n";
-                cout << "-----------------\n";
-
+        while (p != nullptr && !found) {
+            if (p->info.genre == key) {
+                cout << "\n-- DITEMUKAN --\n";
+                cout << "ID    : " << p->info.id << "\n";
+                cout << "Judul : " << p->info.judul << "\n";
+                cout << "Artis : " << p->info.artis << "\n";
+                cout << "Genre : " << p->info.genre << "\n";
+                cout << "Tahun : " << p->info.tahun << "\n";
+                cout << "Durasi: " << p->info.durasi << "\n";
                 found = true;
+            } else {
+                p = p->next;
             }
-            p = p->next;
         }
     }
 
-    // ======================================
-    // MODE 5 — Cari berdasarkan tahun
-    // ======================================
+    // MODE 5 — Tahun 
     else if (mode == 5) {
-        int tahun;
+        int key;
         cout << "Masukkan Tahun: ";
-        cin >> tahun;
+        cin >> key;
 
-        p = L.head;
-
-        while (p != nullptr) {
-            if (p->info.tahun == tahun) {
-
-                cout << "\nID: " << p->info.id << "\n";
-                cout << "Judul: " << p->info.judul << "\n";
-                cout << "Artis: " << p->info.artis << "\n";
-                cout << "Genre: " << p->info.genre << "\n";
-                cout << "Tahun: " << p->info.tahun << "\n";
-                cout << "-----------------\n";
-
+        while (p != nullptr && !found) {
+            if (p->info.tahun == key) {
+                cout << "\n-- DITEMUKAN --\n";
+                cout << "ID    : " << p->info.id << "\n";
+                cout << "Judul : " << p->info.judul << "\n";
+                cout << "Artis : " << p->info.artis << "\n";
+                cout << "Genre : " << p->info.genre << "\n";
+                cout << "Tahun : " << p->info.tahun << "\n";
+                cout << "Durasi: " << p->info.durasi << "\n";
                 found = true;
+            } else {
+                p = p->next;
             }
-            p = p->next;
         }
     }
 
-    // Jika pilihan menu tidak valid
     else {
         cout << "Pilihan tidak valid.\n";
     }
 
-    // Jika tidak ada satu pun yang cocok
     if (!found) {
         cout << "Tidak ada lagu yang cocok.\n";
     }
