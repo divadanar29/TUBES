@@ -44,7 +44,6 @@ int main() {
 
                 if (adminMenu == 1) {
                     Song s;
-                    int tahun, durasi;
 
                     cout << "Masukkan ID: "; cin >> s.id;
                     cout << "Masukkan Judul: "; cin >> s.judul;
@@ -52,9 +51,6 @@ int main() {
                     cout << "Masukkan Genre: "; cin >> s.genre;
                     cout << "Masukkan Tahun: "; cin >> s.tahun;
                     cout << "Masukkan Durasi: "; cin >> s.durasi;
-
-                    s.tahun = tahun;
-                    s.durasi = durasi;
 
                     addSong(lib, s);
                     cout << "Lagu berhasil ditambahkan.\n";
