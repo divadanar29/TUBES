@@ -267,7 +267,7 @@ int main() {
            ======== EXIT ===========
            ========================= */
         else if (pilih == 0) {
-            cout << "Terima kasih telah menggunakan Listify.DS.\n";
+            cout << "Terima kasih telah menggunakan ListifyDS.\n";
             exitMain = true;
         }
         else {
