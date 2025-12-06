@@ -110,9 +110,9 @@ void searchSong(Library L) {
 
     cout << "\n=== PENCARIAN LAGU ===\n";
     cout << "1. Berdasarkan ID\n";
-    cout << "2. Berdasarkan Judul (exact)\n";
-    cout << "3. Berdasarkan Artis (exact)\n";
-    cout << "4. Berdasarkan Genre (exact)\n";
+    cout << "2. Berdasarkan Judul\n";
+    cout << "3. Berdasarkan Artis\n";
+    cout << "4. Berdasarkan Genre\n";
     cout << "5. Berdasarkan Tahun\n";
     cout << "Pilih (1-5): ";
 
