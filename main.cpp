@@ -53,7 +53,6 @@ int main() {
                     cout << "Masukkan Durasi: "; cin >> s.durasi;
 
                     addSong(lib, s);
-                    cout << "Lagu berhasil ditambahkan.\n";
                 }
                 else if (adminMenu == 2) {
                     int id;
@@ -67,7 +66,6 @@ int main() {
                     cout << "Masukkan Durasi baru: "; cin >> newData.durasi;
 
                     updateSong(lib, id, newData);
-                    cout << "Lagu berhasil diupdate.\n";
                 }
                 else if (adminMenu == 3) {
                     int id;
@@ -75,7 +73,6 @@ int main() {
                     cin >> id;
 
                     deleteSong(lib, id, users);
-                    cout << "Lagu berhasil dihapus.\n";
                 }
                 else if (adminMenu == 4) {
                     showAllSongs(lib);
