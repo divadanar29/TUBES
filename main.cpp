@@ -133,15 +133,40 @@ int main() {
                     addPlaylistToUser(currentUser, pname);
                 }
                 else if (menuUser == 4) {
-                    if (currentUser->firstPlaylist == nullptr) cout << "Belum ada playlist.\n";
-                    else {
+                    if (currentUser->firstPlaylist == nullptr) {
+                        cout << "Belum ada playlist.\n";
+                    } else {
+
+                        // Tampilkan daftar playlist milik user
                         addressPlaylistNode p = currentUser->firstPlaylist;
                         int idx = 1;
-                        cout << "\n=== DAFTAR PLAYLIST ===\n";
+
+                        cout << "\n=== DAFTAR PLAYLIST MILIK " << currentUser->username << " ===\n";
+
                         while (p != nullptr) {
                             cout << idx << ". " << p->info.nama << "\n";
-                            idx++;
                             p = p->next;
+                            idx++;
+                        }
+
+                        cout << "Pilih playlist: ";
+                        int pilihPL;
+                        cin >> pilihPL;
+
+                        // Cari playlist berdasarkan nomor
+                        p = currentUser->firstPlaylist;
+                        idx = 1;
+
+                        while (p != nullptr && idx < pilihPL) {
+                            p = p->next;
+                            idx++;
+                        }
+
+                        if (p == nullptr) {
+                            cout << "Playlist tidak ditemukan.\n";
+                        } else {
+                            // Tampilkan isi playlist
+                            showPlaylist(p->info);
                         }
                     }
                 }
