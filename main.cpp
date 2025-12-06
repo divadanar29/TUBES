@@ -110,7 +110,7 @@ int main() {
                 char yn;
                 cin >> yn;
 
-                if (yn == 'ya' || yn == 'YA' || 'Ya') {
+                if (yn == 'y' || yn == 'Y') {
                     currentUser = createUser(uname);
                     addUser(users, currentUser);
                     cout << "Akun berhasil dibuat.\n";
