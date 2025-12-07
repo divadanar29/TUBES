@@ -16,6 +16,9 @@ int main() {
     Stack history;
     createStack(history);
 
+    Queue Q;
+    createQueue(Q);
+
     cout << "=== Selamat datang di Listify.DS ===\n";
 
     bool exitMain = false;
@@ -34,6 +37,7 @@ int main() {
            ========== ADMIN ========
            ========================= */
         if (pilih == 1) {
+
             bool exitAdmin = false;
 
             while (!exitAdmin) {
@@ -50,6 +54,7 @@ int main() {
 
                 if (adminMenu == 1) {
                     Song s;
+
                     cout << "Masukkan ID: "; cin >> s.id;
                     cout << "Masukkan Judul: "; cin >> s.judul;
                     cout << "Masukkan Artis: "; cin >> s.artis;
@@ -96,11 +101,13 @@ int main() {
            ========== USER =========
            ========================= */
         else if (pilih == 2) {
+
             cout << "Masukkan username: ";
             string uname;
             cin >> uname;
 
             addressUser currentUser = users;
+
             while (currentUser != nullptr && currentUser->username != uname) {
                 currentUser = currentUser->next;
             }
@@ -114,8 +121,7 @@ int main() {
                     currentUser = createUser(uname);
                     addUser(users, currentUser);
                     cout << "Akun berhasil dibuat.\n";
-                }
-                else {
+                } else {
                     continue;
                 }
             }
@@ -124,13 +130,17 @@ int main() {
 
             while (!exitUser) {
                 cout << "\n=== MENU USER ===\n";
-                cout << "1. Show Semua Lagu\n";
-                cout << "2. Search Lagu\n";
-                cout << "3. Create Playlist\n";
-                cout << "4. Show Playlist\n";
-                cout << "5. Add Lagu ke Playlist\n";
-                cout << "6. Playlist Controls\n";
-                cout << "0. Logout\n";
+                cout << "1.  Show Semua Lagu\n";
+                cout << "2.  Search Lagu\n";
+                cout << "3.  Create Playlist\n";
+                cout << "4.  Show Playlist\n";
+                cout << "5.  Add Lagu ke Playlist\n";
+                cout << "6.  Playlist Controls\n";
+                cout << "7.  Lihat History (STACK)\n";
+                cout << "8.  Lihat Antrian Lagu (QUEUE)\n";
+                cout << "9.  Tambahkan Lagu ke Antrian\n";
+                cout << "10. Putar Lagu dari Antrian\n";
+                cout << "0.  Logout\n";
                 cout << "Pilih: ";
 
                 int menuUser;
@@ -186,8 +196,7 @@ int main() {
                 else if (menuUser == 5) {
                     if (currentUser->firstPlaylist == nullptr) {
                         cout << "Belum ada playlist.\n";
-                    }
-                    else {
+                    } else {
                         cout << "Masukkan nomor playlist: ";
                         int plNum; cin >> plNum;
 
@@ -200,13 +209,12 @@ int main() {
                         }
 
                         if (p != nullptr) {
-                            cout << "Masukkan ID lagu: ";
+                            cout << "Masukkan ID lagu yang ingin ditambahkan: ";
                             int id; cin >> id;
-
                             addressLibrary s = findSongById(lib, id);
+
                             addSongToPlaylist(p->info, s);
-                        }
-                        else {
+                        } else {
                             cout << "Playlist tidak ditemukan.\n";
                         }
                     }
@@ -214,17 +222,17 @@ int main() {
                 else if (menuUser == 6) {
                     if (currentUser->firstPlaylist == nullptr) {
                         cout << "Belum ada playlist.\n";
-                    }
-                    else {
+                    } else {
                         cout << "\n=== Playlist Controls ===\n";
                         cout << "1. Play Lagu\n";
-                        cout << "2. Stop Lagu\n";
-                        cout << "3. Next Song\n";
-                        cout << "4. Previous Song\n";
+                        cout << "2. Stop\n";
+                        cout << "3. Next\n";
+                        cout << "4. Previous\n";
                         cout << "0. Kembali\n";
                         cout << "Pilih: ";
 
-                        int ctrl; cin >> ctrl;
+                        int ctrl;
+                        cin >> ctrl;
 
                         if (ctrl == 1) {
                             cout << "Masukkan nomor playlist: ";
@@ -241,17 +249,33 @@ int main() {
                             if (p != nullptr) {
                                 cout << "Masukkan ID lagu: ";
                                 int id; cin >> id;
-
                                 playFromPlaylist(cp, p->info, id);
-                            }
-                            else {
-                                cout << "Playlist tidak ditemukan.\n";
-                            }
+                                push(history, cp.songPtr);
+                            } else cout << "Playlist tidak ditemukan.\n";
                         }
                         else if (ctrl == 2) stopSong(cp);
                         else if (ctrl == 3) nextSong(lib, cp);
                         else if (ctrl == 4) prevSong(cp, history);
                     }
+                }
+                else if (menuUser == 7) {
+                    showStack(history);
+                }
+                else if (menuUser == 8) {
+                    showQueue(Q);
+                }
+                else if (menuUser == 9) {
+                    cout << "Masukkan ID lagu: ";
+                    int id; cin >> id;
+                    addressLibrary s = findSongById(lib, id);
+                    enqueue(Q, s);
+                }
+                else if (menuUser == 10) {
+                    if (!isQueueEmpty(Q)) {
+                        addressLibrary s = dequeue(Q);
+                        playSong(cp, s);
+                        push(history, s);
+                    } else cout << "Antrian kosong.\n";
                 }
                 else if (menuUser == 0) {
                     cout << "Logout berhasil.\n";
@@ -267,9 +291,10 @@ int main() {
            ======== EXIT ===========
            ========================= */
         else if (pilih == 0) {
-            cout << "Terima kasih telah menggunakan ListifyDS.\n";
+            cout << "Terima kasih telah menggunakan Listify.DS\n";
             exitMain = true;
         }
+
         else {
             cout << "Pilihan tidak valid.\n";
         }
