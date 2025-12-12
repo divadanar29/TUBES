@@ -5,9 +5,6 @@
 #include <string>
 using namespace std;
 
-// ============================================================
-//  TYPEDEF POINTER
-// ============================================================
 typedef struct NodeLibrary*        addressLibrary;
 typedef struct NodePlaylist*       addressPlaylist;
 typedef struct PlaylistNode*       addressPlaylistNode;
@@ -16,23 +13,18 @@ typedef struct NodeUser*           addressUser;
 typedef struct StackNode*          addressStackNode;
 typedef struct QueueNode*          addressQueueNode;
 
-
-// ============================================================
-//  STRUCT: SONG (UPDATED WITH DURASI)
-// ============================================================
 struct Song {
     int id;
     string judul;
     string artis;
     string genre;
     int tahun;
-    int durasi;     // durasi lagu (detik atau menit)
+    string durasi;
+
+    int playCount;
+    bool favorite;
 };
 
-
-// ============================================================
-//  LIBRARY (DOUBLY LINKED LIST)
-// ============================================================
 struct NodeLibrary {
     Song info;
     addressLibrary next;
@@ -44,12 +36,8 @@ struct Library {
     addressLibrary tail;
 };
 
-
-// ============================================================
-//  PLAYLIST (DLL RELATION, MENAMPUNG POINTER KE LIBRARY)
-// ============================================================
 struct NodePlaylist {
-    addressLibrary lagu;   // pointer ke node library
+    addressLibrary lagu;
     addressPlaylist next;
     addressPlaylist prev;
 };
@@ -60,28 +48,22 @@ struct Playlist {
     addressPlaylist tail;
 };
 
-
-// ============================================================
-//  USER (MULTIPLE PLAYLISTS) – MLL TIPE A
-// ============================================================
 struct PlaylistNode {
-    Playlist info;                  // satu user bisa punya banyak playlist
+    Playlist info;
     addressPlaylistNode next;
     addressPlaylistNode prev;
 };
 
 struct NodeUser {
     string username;
+    string password;
+
     addressPlaylistNode firstPlaylist;
 
     addressUser next;
     addressUser prev;
 };
 
-
-// ============================================================
-//  STACK (RIWAYAT LAGU DIPUTAR) – LIFO
-// ============================================================
 struct StackNode {
     addressLibrary lagu;
     addressStackNode next;
@@ -91,10 +73,6 @@ struct Stack {
     addressStackNode top;
 };
 
-
-// ============================================================
-//  QUEUE (ANTRIAN LAGU) – FIFO
-// ============================================================
 struct QueueNode {
     addressLibrary lagu;
     addressQueueNode next;
@@ -105,10 +83,6 @@ struct Queue {
     addressQueueNode tail;
 };
 
-
-// ============================================================
-//  CURRENT PLAY (STATUS PLAYER SAAT INI)
-// ============================================================
 struct CurrentPlay {
     addressLibrary songPtr;
     bool isPlaying;
@@ -117,33 +91,27 @@ struct CurrentPlay {
     addressPlaylist currentPlaylistNode;
 };
 
+void clrscr();
+void konfirmKeluar();
 
-// ============================================================
-//  FUNGSI LIBRARY
-// ============================================================
 void createLibrary(Library &L);
 addressLibrary allocateLibrary(Song s);
 void addSong(Library &L, Song s);
 void showAllSongs(Library L);
 addressLibrary findSongById(Library L, int id);
-void updateSong(Library &L, int id, Song newData);
+void updateSong(Library &L, int id);
 void searchSong(Library L);
 void deleteSong(Library &L, int id, addressUser userList);
 
-
-// ============================================================
-//  USER & PLAYLIST MANAGEMENT (MLL TIPE A)
-// ============================================================
-addressUser createUser(string nama);
+addressUser createUser(string nama, string pw);
 void addUser(addressUser &U, addressUser newUser);
 
 addressPlaylistNode createPlaylistNode(string nama);
 void addPlaylistToUser(addressUser u, string nama);
 
+void renamePlaylist(addressUser u, string oldName, string newName);
+void searchPlaylist(addressUser users, string playlistName);
 
-// ============================================================
-//  PLAYLIST (DLL RELATION)
-// ============================================================
 void createPlaylist(Playlist &P, string nama);
 addressPlaylist allocatePlaylist(addressLibrary L);
 void addSongToPlaylist(Playlist &P, addressLibrary L);
@@ -151,36 +119,37 @@ void removeSongFromPlaylist(Playlist &P, int id);
 void showPlaylist(Playlist P);
 bool isPlaylistEmpty(Playlist P);
 
-
-// ============================================================
-//  STACK
-// ============================================================
 void createStack(Stack &S);
 void push(Stack &S, addressLibrary L);
 addressLibrary pop(Stack &S);
 bool isStackEmpty(Stack S);
 void showStack(Stack S);
 
-
-// ============================================================
-//  QUEUE
-// ============================================================
 void createQueue(Queue &Q);
 void enqueue(Queue &Q, addressLibrary L);
 addressLibrary dequeue(Queue &Q);
 bool isQueueEmpty(Queue Q);
 void showQueue(Queue Q);
 
-
-// ============================================================
-//  PLAY CONTROL (MENGATUR PEMUTARAN LAGU)
-// ============================================================
-void playSong(CurrentPlay &cp, addressLibrary s);
-void playFromPlaylist(CurrentPlay &cp, Playlist &P, int id);
+void playSong(CurrentPlay &cp, addressLibrary s, Stack &history);
+void playFromPlaylist(CurrentPlay &cp, Playlist &P, int id, Stack &history);
 void stopSong(CurrentPlay &cp);
-void nextSong(Library L, CurrentPlay &cp);
+void nextSong(Library L, CurrentPlay &cp, Stack &history);
 void prevSong(CurrentPlay &cp, Stack &history);
 
 addressLibrary findSimilarSong(Library L, addressLibrary current);
 
-#endif
+void deletePlaylist(addressUser u, string namaPlaylist);
+
+void showMostPlayed(Library L);
+void markFavoriteById(Library &L, int id);
+void unmarkFavoriteById(Library &L, int id);
+void showFavoriteSongs(Library L);
+
+addressLibrary getRandomSong(Library L);
+void shufflePlayLibrary(Library L, CurrentPlay &cp, Stack &history);
+void setUserPassword(addressUser u, string pass);
+bool verifyUserPassword(addressUser u, string pass);
+addressUser findUser(addressUser U, string username);
+
+#endif // LISTIFYDS_H_INCLUDED
