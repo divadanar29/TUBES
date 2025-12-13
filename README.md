@@ -245,7 +245,7 @@ Proses input: Menu User → Favorite Lagu → Pilih 3. Lihat Daftar Favorite
 
 
 
-11. Shuffle Mode
+10. Shuffle Mode
 
 Struktur Data: Doubly Linked List (Library) untuk mengambil satu lagu secara acak, lalu langsung memutarnya sebagai CurrentPlay. 
 
@@ -259,7 +259,7 @@ Proses Input: Menu User → Pilih Shuffle Play
 
 
 
-10. Top Played
+11. Top Played
 
 Menampilkan lagu dengan jumlah playCount tertinggi.
 
