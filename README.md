@@ -7,7 +7,8 @@ Listify.DS adalah aplikasi pemutar musik berbasis terminal yang dikembangkan men
 Aplikasi ini cocok untuk mahasiswa yang mempelajari struktur data seperti Pointer, Doubly Linked List, Multi Linked List, Queue, dan Stack, atau siapa saja yang ingin memahami simulasi dasar aplikasi musik.
 
 ✨ FITUR – FITUR PROGRAM
-1. Library Lagu
+
+📚 1. Library Lagu
 
 Library adalah pusat data seluruh lagu yang disimpan menggunakan Doubly Linked List (DLL).
 
@@ -44,7 +45,7 @@ showAllSongs()
 Proses Input:
 Menu User → Menu Library → Lihat Semua Lagu
 
-2. Cari Lagu
+🔍 2. Cari Lagu
 
 Struktur Data:
 Doubly Linked List (Library)
@@ -69,7 +70,7 @@ searchSong()
 Proses Input:
 Menu Library → Cari Lagu → Pilih mode → Masukkan kata kunci
 
-3. Play Lagu
+▶️ 3. Play Lagu
 
 Struktur Data:
 Pointer ke node lagu yang sedang aktif (CurrentPlay → songPtr).
@@ -91,7 +92,7 @@ b. playFromPlaylist() – memutar dari playlist
 Proses Input:
 Menu Library → Play Lagu → Masukkan ID
 
-4. Stop Lagu
+⏹️ 4. Stop Lagu
 
 Menghentikan lagu yang sedang berjalan dengan mengatur status isPlaying menjadi false.
 
@@ -101,7 +102,7 @@ stopSong()
 Proses Input:
 Menu Library → Stop
 
-5. Next Lagu
+⏭️ 5. Next Lagu
 
 Perpindahan lagu dilakukan melalui:
 
@@ -117,7 +118,7 @@ nextSong(), findSimilarSong()
 Proses Input:
 Menu Library → Next Lagu
 
-6. Previous Lagu
+⏮️ 6. Previous Lagu
 
 Menggunakan Stack (LIFO) sebagai riwayat pemutaran. Setiap lagu yang diputar akan disimpan ke stack, lalu ketika memilih prev akan dilakukan operasi pop.
 
@@ -127,7 +128,7 @@ prevSong(), push(), pop()
 Proses Input:
 Menu Library → Prev Lagu
 
-7. Playlist
+🎼 7. Playlist
 
 Struktur Data:
 
@@ -141,13 +142,13 @@ Setiap node playlist (NodePlaylist) menyimpan pointer ke node library (tanpa dup
 
 Playlist memungkinkan manajemen koleksi lagu yang dinamis dan fleksibel.
 
-7.1. Show Semua Playlist
+📂 7.1. Show Semua Playlist
 
 Struktur Data: Traversal MLL untuk menampilkan seluruh playlist user.
 
 Fungsi terkait: Traversal firstPlaylist
 
-7.2. Create Playlist
+➕ 7.2. Create Playlist
 
 Deskripsi: Menambah playlist baru ke MLL pengguna (insert node playlist baru)
 
@@ -155,13 +156,13 @@ Fungsi terkait: addPlaylistToUser()
 
 Proses Input: Menu Playlist → Create Playlist → Masukkan nama
 
-7.3. Show Playlist
+📃 7.3. Show Playlist
 
 Deskripsi: Menampilkan isi playlist (DLL pointer ke Library) 
 
 Fungsi terkait: showPlaylist()
 
-7.4. Add Lagu ke Playlist
+🎶 7.4. Add Lagu ke Playlist
 
 Deskripsi: Menambahkan node playlist baru berisi pointer ke node Library.
 
@@ -169,7 +170,7 @@ Fungsi terkait: addSongToPlaylist()
 
 Proses Input: Pilih playlist → Masukkan ID lagu
 
-7.5. Playlist Controls
+🎛️ 7.5. Playlist Controls
 
 Meliputi: Play, Stop, Next, Prev
 
@@ -181,26 +182,26 @@ b. Pointer ke DLL Library → untuk memutar lagu
 
 Fungsi terkait: playFromPlaylist(), nextSong()
 
-7.6. Rename Playlist
+✏️ 7.6. Rename Playlist
 
 Deskripsi: Mengubah nama playlist via MLL traversal.
 
 Fungsi terkait: renamePlaylist()
 
-7.7. Hapus Playlist
+🗑️ 7.7. Hapus Playlist
 
 Deskripsi: Menghapus node playlist dari MLL user, DLL playlist terhapus otomatis (relasi pointer dilepas)
 
 Fungsi terkait: deletePlaylist()
 
-7.8. Remove Lagu dari Playlist
+❌ 7.8. Remove Lagu dari Playlist
 
 Deskripsi: Menghapus node dalam DLL playlist.
 
 Fungsi terkait: removeSongFromPlaylist()
 
 
-8. Antrian Lagu
+📥 8. Antrian Lagu
    
 Struktur Data: Queue (FIFO), implementasi dengan linked list (QueueNode). Digunakan untuk menjalankan lagu berdasarkan urutan penambahan.
 
@@ -215,7 +216,7 @@ enqueue(), dequeue(), showQueue()
 Proses Input:
 Menu Antrian Lagu → Tambah Lagu → Putar
 
-9. Favorite Lagu
+⭐ 9. Favorite Lagu
    
 Setiap lagu memiliki atribut favorite (boolean) pada node DLL Library, sehingga penandaan favorit hanya mengubah status pada node tanpa membuat struktur baru.
 
@@ -245,7 +246,7 @@ Proses input: Menu User → Favorite Lagu → Pilih 3. Lihat Daftar Favorite
 
 
 
-10. Shuffle Mode
+🔀 10. Shuffle Mode
 
 Struktur Data: Doubly Linked List (Library) untuk mengambil satu lagu secara acak, lalu langsung memutarnya sebagai CurrentPlay. 
 
@@ -259,7 +260,7 @@ Proses Input: Menu User → Pilih Shuffle Play
 
 
 
-11. Top Played
+🔥 11. Top Played
 
 Menampilkan lagu dengan jumlah playCount tertinggi.
 
@@ -268,7 +269,7 @@ showMostPlayed()
 
 Proses input: Menu User → Pilih Top Played
 
-12. Admin Mode
+🛠️ 12. Admin Mode
 
 Struktur Data: Admin melakukan manipulasi langsung pada DLL Library.
 
@@ -282,7 +283,7 @@ c. Hapus Lagu → deleteSong()
 d. Lihat Semua Lagu → showAllSongs()
 
 
-13. Login User
+🔐 13. Login User
 
 Struktur Data: 
 Semua user disimpan dalam MLL tipe A:
@@ -293,10 +294,9 @@ Fungsi terkait: findUser(), verifyUserPassword(), setUserPassword()
 
 Proses input: Halaman Awal → Masukkan username → Masukkan password
 
-14. Exit
+🚪 14. Exit
 
 Menutup aplikasi.
 
 Proses Input:
 Menu Utama → Pilih 0
-
